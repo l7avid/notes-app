@@ -7,6 +7,7 @@ interface ButtonProps {
   btnText: string;
   btnStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  disabled?: StyleProp<boolean>;
   onPress?: () => void;
 }
 
