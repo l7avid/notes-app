@@ -12,9 +12,10 @@ import imagePath from '../utils/constants/imagePath';
 import {AddNoteForm} from '../components/organisms/AddNoteForm';
 import {supabase} from '../lib/supabase';
 import {Note} from '../interfaces/Note';
+import { fetchNotes, Notes } from '../lib/api';
 
 export const AddNotePage = ({navigation}: any) => {
-  const [notes, setNotes] = useState<Note[]>();
+  const [notes, setNotes] = useState<Notes>();
 
   const handleSubmit = async (content: string) => {
     const {data, error} = await supabase.from('notes').insert({content}).select();
@@ -26,19 +27,7 @@ export const AddNotePage = ({navigation}: any) => {
   };
 
   useEffect(() => {
-    const fetchNotes = async () => {
-      const {data, error} = await supabase.from('notes').select('*').order('created_at', {
-        ascending: false
-      });
-
-      if (error) {
-        console.log(error);
-      } else {
-        setNotes(data);
-      }
-    };
-
-    fetchNotes();
+    fetchNotes().then(data => setNotes(data));
   }, []);
 
   return (
