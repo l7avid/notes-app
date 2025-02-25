@@ -17,6 +17,7 @@ export const AddNoteForm = ({onSubmit}: Props) => {
         style={styles.input}
         value={content}
         onChangeText={setContent}
+        placeholder="What's on your mind?"
       />
       <Button
         btnStyle={styles.button}

@@ -12,17 +12,21 @@ import imagePath from '../utils/constants/imagePath';
 import {AddNoteForm} from '../components/organisms/AddNoteForm';
 import {supabase} from '../lib/supabase';
 import {Note} from '../interfaces/Note';
-import { fetchNotes, Notes } from '../lib/api';
+import {fetchNotes, Notes} from '../lib/api';
+import NoteCard from '../components/organisms/NoteCard';
 
 export const AddNotePage = ({navigation}: any) => {
   const [notes, setNotes] = useState<Notes>();
 
   const handleSubmit = async (content: string) => {
-    const {data, error} = await supabase.from('notes').insert({content}).select();
+    const {data, error} = await supabase
+      .from('notes')
+      .insert({content})
+      .select();
     if (error) {
       console.log(error);
     } else {
-      setNotes([data[0], ...notes])
+      setNotes([data[0], ...notes]);
     }
   };
 
@@ -33,11 +37,11 @@ export const AddNotePage = ({navigation}: any) => {
   return (
     <View style={styles.container}>
       <AddNoteForm onSubmit={handleSubmit}></AddNoteForm>
-      <View style={styles.separator}/>
       <FlatList
         data={notes}
         keyExtractor={item => item.id}
-        renderItem={({item}) => <Text>{item.content}</Text>}></FlatList>
+        contentContainerStyle={{paddingTop: 8}}
+        renderItem={({item}) => <NoteCard note={item}/>}></FlatList>
     </View>
   );
 };
@@ -45,16 +49,5 @@ export const AddNotePage = ({navigation}: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
 });

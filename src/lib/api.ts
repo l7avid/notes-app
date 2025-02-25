@@ -17,3 +17,4 @@ export const fetchNotes = async () => {
 };
 
 export type Notes = Awaited<ReturnType<typeof fetchNotes>>;
+export type Note = Notes[number]
