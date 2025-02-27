@@ -7,11 +7,15 @@ import navigationScreenNames from '../utils/constants/navigationScreenNames';
 import { SignInWithPasswordCredentials, SignUpWithPasswordCredentials } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginReducer } from '../redux/reducers/userAuth';
+import { RootState } from '../redux/store';
 
 const Stack = createNativeStackNavigator();
-const isAuth: boolean = false;
 
 export default function ScreenStack() {
+  const isAuth: boolean = !!useSelector((state: RootState) => state.userData?.userData);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const signUp = async (credentials: SignUpWithPasswordCredentials) => {
@@ -34,6 +38,8 @@ export default function ScreenStack() {
     const {error, data} = await supabase.auth.signInWithPassword({email, password});
     if(error) {
       Alert.alert(error.message);
+    } else {
+      dispatch(loginReducer(true));
     }
 
     console.log(data);

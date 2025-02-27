@@ -13,7 +13,7 @@ import LoginPage from './src/screens/LoginPage';
 import {View} from 'react-native';
 import Route from './src/navigations/Route';
 import {Provider} from 'react-redux';
-import store from './src/redux/store';
+import {store} from './src/redux/store';
 
 type SectionProps = PropsWithChildren<{
   title: string;

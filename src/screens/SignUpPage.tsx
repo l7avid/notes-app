@@ -41,25 +41,26 @@ export default function SignUpPage({navigation, route}: any) {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isConfirmPasswordHidden, setIsConfirmPasswordHidden] = useState(true);
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      const {data, error} = await supabase.from('notes').select('*');
+  // useEffect(() => {
+  //   const fetchNotes = async () => {
+  //     const {data, error} = await supabase.from('notes').select('*');
 
-      if (error) {
-        console.log(error + 'Hola');
-      } else {
-        setNotes(data);
-      }
-    };
+  //     if (error) {
+  //       console.log(error + 'Hola');
+  //     } else {
+  //       setNotes(data);
+  //     }
+  //   };
 
-    fetchNotes();
-  }, []);
+  //   fetchNotes();
+  // }, []);
 
+  // console.log(notes);
+  
   const handleSubmit = () => {
     onSignUp({email, password});
   };
 
-  console.log(notes);
   return (
     <SafeAreaView
       style={{flex: 1, backgroundColor: colors.themebackgroundcolor}}>
