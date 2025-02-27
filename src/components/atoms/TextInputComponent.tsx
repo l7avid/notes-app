@@ -29,8 +29,8 @@ export default function TextInputComponent(props: ITextInputProps) {
 
 const styles = StyleSheet.create({
   inputStyle: {
-    marginBottom: moderateScale(26),
-    backgroundColor: colors.white,
+    marginBottom: moderateScale(30),
+    backgroundColor: colors.themebackgroundcolor,
     width: width / 1.1,
     height: moderateScale(48),
     borderRadius: moderateScale(12),

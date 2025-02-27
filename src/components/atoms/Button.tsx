@@ -11,7 +11,7 @@ interface ButtonProps {
   onPress?: () => void;
 }
 
-export default function Button({ btnText, btnStyle, textStyle, onPress }: ButtonProps) {
+export default function Button({ btnText, btnStyle, textStyle, onPress, disabled }: ButtonProps) {
 
   return (
     <TouchableOpacity
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   },
   bntTextStyle: {
     fontSize: textScale(14),
-    color: colors.white
+    color: colors.white,
+    lineHeight: textScale(14)
   }
 })

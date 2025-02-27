@@ -1,32 +1,44 @@
-import {
-  View,
-  Alert,
-  Image,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  ImageBackground,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
 import React, {useState} from 'react';
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Button from '../components/atoms/Button';
-import imagePath from '../utils/constants/imagePath';
+import TextInputComponent from '../components/atoms/TextInputComponent';
+import colors from '../styles/colors';
 import {
   height,
   moderateScale,
   textScale,
   width,
 } from '../styles/responsiveSize';
+import imagePath from '../utils/constants/imagePath';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
-import colors from '../styles/colors';
-import TextInputComponent from '../components/atoms/TextInputComponent';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function LoginPage({navigation}: {navigation: any}) {
+import type {SignInWithPasswordCredentials} from '@supabase/supabase-js';
+
+interface LoginFormProps {
+  onLogin: (credentials: SignInWithPasswordCredentials) => void;
+  loading: boolean;
+}
+
+export default function LoginPage({navigation, route}: any) {
+  const { onLogin, loading, onSignUp } = route.params || {};
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleSubmit = () => {
+    onLogin({email, password});
+  };
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -49,7 +61,7 @@ export default function LoginPage({navigation}: {navigation: any}) {
         </ImageBackground>
 
         <View style={styles.containViewStyle}>
-          <Text style={styles.welcomeText}>Notes App</Text>
+          <Text style={styles.welcomeText}>Welcome!</Text>
           <Image
             style={styles.whiteBoardImageStyle}
             source={imagePath.loginIc}
@@ -58,6 +70,7 @@ export default function LoginPage({navigation}: {navigation: any}) {
             value={email}
             onChangeText={text => setEmail(text)}
             placeholder={'Email'}
+            keyboardType="default"
           />
           <TextInputComponent
             value={password}
@@ -68,12 +81,18 @@ export default function LoginPage({navigation}: {navigation: any}) {
           <Button
             btnStyle={{marginTop: moderateScale(20)}}
             btnText={'Sign In'}
+            disabled={loading || !email || !password}
+            onPress={handleSubmit}
           />
-          <Text style={styles.readyText}>Don't have an account ?
+          <Text style={styles.readyText}>
+            Don't have an account ?
             <Text
               style={styles.signinText}
-              onPress={() => navigation.navigate(navigationScreenNames.SIGNUP)}
-            >Sign Up</Text>
+              onPress={() =>
+                navigation.navigate(navigationScreenNames.SIGNUP)
+              }>
+              Sign Up
+            </Text>
           </Text>
         </View>
       </View>
@@ -104,6 +123,7 @@ const styles = StyleSheet.create({
     marginHorizontal: moderateScale(16),
     flex: 0.5,
     justifyContent: 'center',
+    marginBottom: moderateScale(10),
   },
   forgetText: {
     color: colors.btnColor,
@@ -111,13 +131,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: moderateScale(12),
   },
-  readyText:{
-    fontSize:textScale(15),
-    marginTop:moderateScale(32)
+  readyText: {
+    fontSize: textScale(15),
+    marginTop: moderateScale(32),
   },
-  signinText:{
-    fontSize:textScale(15),
-    color:colors.btnColor,
-    fontWeight:'500'
-  }
+  signinText: {
+    fontSize: textScale(15),
+    color: colors.btnColor,
+    fontWeight: '500',
+  },
+  textInput: {
+    marginBottom: moderateScale(10),
+  },
 });

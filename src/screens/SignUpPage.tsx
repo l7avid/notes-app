@@ -1,53 +1,63 @@
+import {SignUpWithPasswordCredentials} from '@supabase/supabase-js';
+import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
-  Alert,
-  ScrollView,
-  TouchableOpacity,
   ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import imagePath from '../utils/constants/imagePath';
+import 'react-native-url-polyfill/auto';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Button from '../components/atoms/Button';
+import TextInputComponent from '../components/atoms/TextInputComponent';
+import {Note} from '../interfaces/Note';
+import {supabase} from '../lib/supabase';
+import colors from '../styles/colors';
 import {
   height,
   moderateScale,
   textScale,
   width,
 } from '../styles/responsiveSize';
-import {login} from '../redux/reducers/userAuth';
-import colors from '../styles/colors';
-import {useDispatch} from 'react-redux';
-import TextInputComponent from '../components/atoms/TextInputComponent';
-import Button from '../components/atoms/Button';
+import imagePath from '../utils/constants/imagePath';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
-import { supabase } from '../lib/supabase'
-import 'react-native-url-polyfill/auto'
-import { Note } from '../interfaces/Note';
 
-export default function SignUpPage({navigation}: {navigation: any}) {
+interface SignUpFormProps {
+  onSignUp: (credentials: SignUpWithPasswordCredentials) => void;
+  loading: boolean;
+}
+
+export default function SignUpPage({navigation, route}: any) {
+  const {onSignUp, loading} = route.params;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [notes, setNotes] = useState<Note[]>([]);
-  
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [isConfirmPasswordHidden, setIsConfirmPasswordHidden] = useState(true);
+
   useEffect(() => {
     const fetchNotes = async () => {
       const {data, error} = await supabase.from('notes').select('*');
 
-      if(error) {
+      if (error) {
         console.log(error + 'Hola');
       } else {
         setNotes(data);
       }
-    }
+    };
 
     fetchNotes();
   }, []);
 
+  const handleSubmit = () => {
+    onSignUp({email, password});
+  };
 
   console.log(notes);
   return (
@@ -56,7 +66,7 @@ export default function SignUpPage({navigation}: {navigation: any}) {
       <View
         style={{
           flex: 1,
-          backgroundColor: colors.themebackgroundcolor
+          backgroundColor: colors.themebackgroundcolor,
         }}>
         <ScrollView bounces={false}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -83,20 +93,47 @@ export default function SignUpPage({navigation}: {navigation: any}) {
                 value={email}
                 placeholder={'Enter your email address'}
               />
-              <TextInputComponent
-                placeholder={'Create a Password'}
-                onChangeText={text => setPassword(text)}
-                value={password}
-              />
-              <TextInputComponent
-                value={confirmPassword}
-                placeholder={'Confirm your Password'}
-                onChangeText={text => setConfirmPassword(text)}
-              />
+              <View style={styles.inputContainer}>
+                <TextInputComponent
+                  placeholder={'Create a Password'}
+                  onChangeText={text => setPassword(text)}
+                  value={password}
+                  secureTextEntry={isPasswordHidden}
+                />
+                <TouchableOpacity
+                  onPress={() => setIsPasswordHidden(!isPasswordHidden)}
+                  style={styles.eyeIcon}>
+                  <Icon
+                    name={isPasswordHidden ? 'eye-off' : 'eye'}
+                    size={24}
+                    color="gray"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.inputContainer}>
+                <TextInputComponent
+                  value={confirmPassword}
+                  placeholder={'Confirm your Password'}
+                  onChangeText={text => setConfirmPassword(text)}
+                  secureTextEntry={isConfirmPasswordHidden}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    setIsConfirmPasswordHidden(!isConfirmPasswordHidden)
+                  }
+                  style={styles.eyeIcon}>
+                  <Icon
+                    name={isConfirmPasswordHidden ? 'eye-off' : 'eye'}
+                    size={24}
+                    color="gray"
+                  />
+                </TouchableOpacity>
+              </View>
               <Button
-                onPress={() => console.log('Sign Up')}
+                onPress={handleSubmit}
                 btnStyle={{marginTop: moderateScale(98)}}
                 btnText={'Sign Up'}
+                disabled={loading}
               />
               <Text style={styles.readyText}>
                 {' '}
@@ -147,5 +184,17 @@ const styles = StyleSheet.create({
     fontSize: textScale(15),
     color: colors.btnColor,
     fontWeight: '500',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#ccc',
+    borderRadius: 5,
+    width: '100%',
+  },
+  eyeIcon: {
+    padding: 10,
+    position: 'absolute',
+    right: 10,
   },
 });

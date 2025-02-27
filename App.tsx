@@ -28,12 +28,6 @@ function App(): JSX.Element {
         <Route />
       </View>
     </Provider>
-    // <NavigationContainer>
-    //   <Stack.Navigator screenOptions={{ headerShown: false }}>
-    //     {/* <Stack.Screen name="Home" component={HomePage}></Stack.Screen> */}
-    //     <Stack.Screen name="Login" component={LoginPage}></Stack.Screen>
-    //   </Stack.Navigator>
-    // </NavigationContainer>
   );
 }
 

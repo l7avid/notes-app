@@ -1,17 +1,11 @@
 import {
-  Alert,
   FlatList,
-  ImageBackground,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {height, width} from '../styles/responsiveSize';
-import imagePath from '../utils/constants/imagePath';
 import {AddNoteForm} from '../components/organisms/AddNoteForm';
 import {supabase} from '../lib/supabase';
-import {Note} from '../interfaces/Note';
 import {fetchNotes, Notes} from '../lib/api';
 import NoteCard from '../components/organisms/NoteCard';
 
