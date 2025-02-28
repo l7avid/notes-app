@@ -3,5 +3,5 @@ export default{
   btnColor:'#55847A',
   white:'#FFFFFF',
   themebackgroundcolor:'#EDEDED',
-  deleteColor: '#FF0000'
+  red: '#FF0000'
 }

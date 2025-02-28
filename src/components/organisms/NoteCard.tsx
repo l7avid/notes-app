@@ -10,8 +10,6 @@ interface Props {
 
 export default function NoteCard({note}: Props) {
 
-  const navIcon = Icon.getImageSourceSync('md-arrow-back', 24, 'white');
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -21,7 +19,7 @@ export default function NoteCard({note}: Props) {
         <Text style={styles.contentText}>{note.content}</Text>
         <View style={styles.footer}>
           <TouchableOpacity>
-            <Icon name='delete' size={24} color={colors.deleteColor}></Icon>
+            <Icon name='delete' size={24} color={colors.red}></Icon>
           </TouchableOpacity>
         </View>
       </View>

@@ -8,6 +8,7 @@ import {AddNoteForm} from '../components/organisms/AddNoteForm';
 import {supabase} from '../lib/supabase';
 import {fetchNotes, Notes} from '../lib/api';
 import NoteCard from '../components/organisms/NoteCard';
+import SignOutPage from './SignOutPage';
 
 export const AddNotePage = ({navigation}: any) => {
   const [notes, setNotes] = useState<Notes>();
@@ -30,6 +31,7 @@ export const AddNotePage = ({navigation}: any) => {
 
   return (
     <View style={styles.container}>
+      <SignOutPage/>
       <AddNoteForm onSubmit={handleSubmit}></AddNoteForm>
       <FlatList
         data={notes}
