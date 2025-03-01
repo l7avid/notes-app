@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { User } from '@supabase/supabase-js';
 
 const initialState = {
-    userData : null
+    userData : null as User | null
 }
 
 const userAuth = createSlice({

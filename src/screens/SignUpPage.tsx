@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import 'react-native-url-polyfill/auto';
 import Button from '../components/atoms/Button';
 import HideTextComponent from '../components/atoms/HideTextComponent';
@@ -25,15 +25,16 @@ import navigationScreenNames from '../utils/constants/navigationScreenNames';
 
 export default function SignUpPage({navigation, route}: any) {
   const {onSignUp, loading} = route.params;
-  const [name, setName] = useState('');
+  const [full_name, setFullName] = useState('');
+  const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isConfirmPasswordHidden, setIsConfirmPasswordHidden] = useState(true);
-  
+
   const handleSubmit = () => {
-    onSignUp({email, password});
+    onSignUp({email, password, options: {data: {username, full_name}}});
   };
 
   return (
@@ -61,8 +62,13 @@ export default function SignUpPage({navigation, route}: any) {
             <View style={{marginTop: moderateScale(52), alignItems: 'center'}}>
               <TextInputComponent
                 placeholder={'Enter your Full Name'}
-                onChangeText={text => setName(text)}
-                value={name}
+                onChangeText={text => setFullName(text)}
+                value={full_name}
+              />
+              <TextInputComponent
+                placeholder={'Enter your Username'}
+                onChangeText={text => setUsername(text)}
+                value={username}
               />
               <TextInputComponent
                 onChangeText={text => setEmail(text)}
@@ -79,7 +85,7 @@ export default function SignUpPage({navigation, route}: any) {
                 <TouchableOpacity
                   onPress={() => setIsPasswordHidden(!isPasswordHidden)}
                   style={styles.eyeIcon}>
-                  <HideTextComponent isHidden={isPasswordHidden}/>
+                  <HideTextComponent isHidden={isPasswordHidden} />
                 </TouchableOpacity>
               </View>
               <View style={styles.inputContainer}>
@@ -94,7 +100,7 @@ export default function SignUpPage({navigation, route}: any) {
                     setIsConfirmPasswordHidden(!isConfirmPasswordHidden)
                   }
                   style={styles.eyeIcon}>
-                  <HideTextComponent isHidden={isConfirmPasswordHidden}/>
+                  <HideTextComponent isHidden={isConfirmPasswordHidden} />
                 </TouchableOpacity>
               </View>
               <Button
