@@ -10,7 +10,7 @@ export const fetchProfileById = async (id: string) => {
     console.log(error);
     return;
   } else {
-    return data;
+    return data[0];
   }
 };
 

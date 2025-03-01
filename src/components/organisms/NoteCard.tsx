@@ -6,14 +6,15 @@ import colors from '../../styles/colors';
 
 interface Props {
   note: Note;
+  username: string
 }
 
-export default function NoteCard({note}: Props) {
+export default function NoteCard({note, username}: Props) {
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.username}>User</Text>
+        <Text style={styles.username}>{username}</Text>
       </View>
       <View style={styles.content}>
         <Text style={styles.contentText}>{note.content}</Text>

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { AddNoteForm } from '../components/organisms/AddNoteForm';
 import NoteCard from '../components/organisms/NoteCard';
 import { fetchNotes, Notes } from '../lib/api';
+import { Profile } from '../lib/fetchProfileById';
 import { supabase } from '../lib/supabase';
 import { RootState } from '../redux/store';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
@@ -44,7 +45,12 @@ export const AddNotePage = ({navigation}: any) => {
         data={notes}
         keyExtractor={item => item.id}
         contentContainerStyle={{paddingTop: 8}}
-        renderItem={({item}) => <NoteCard note={item} />}></FlatList>
+        renderItem={({item}) => (
+          <NoteCard
+            note={item}
+            username={userInfo!.user_metadata['username']}
+          />
+        )}></FlatList>
     </View>
   );
 };
