@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  Dimensions,
   Image,
   ImageBackground,
   ScrollView,
@@ -10,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import Button from '../components/atoms/Button';
+import HideTextComponent from '../components/atoms/HideTextComponent';
 import TextInputComponent from '../components/atoms/TextInputComponent';
 import colors from '../styles/colors';
 import {
@@ -21,19 +21,11 @@ import {
 import imagePath from '../utils/constants/imagePath';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
 
-const screenWidth = Dimensions.get('window').width;
-
-import type {SignInWithPasswordCredentials} from '@supabase/supabase-js';
-
-interface LoginFormProps {
-  onLogin: (credentials: SignInWithPasswordCredentials) => void;
-  loading: boolean;
-}
-
 export default function LoginPage({navigation, route}: any) {
-  const { onLogin, loading, onSignUp } = route.params || {};
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const {onLogin, loading} = route.params || {};
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
 
   const handleSubmit = () => {
     onLogin({email, password});
@@ -66,17 +58,27 @@ export default function LoginPage({navigation, route}: any) {
             style={styles.whiteBoardImageStyle}
             source={imagePath.loginIc}
           />
-          <TextInputComponent
-            value={email}
-            onChangeText={text => setEmail(text)}
-            placeholder={'Email'}
-            keyboardType="default"
-          />
-          <TextInputComponent
-            value={password}
-            onChangeText={text => setPassword(text)}
-            placeholder={'Password'}
-          />
+          <View>
+            <TextInputComponent
+              value={email}
+              onChangeText={text => setEmail(text)}
+              placeholder={'Email'}
+              keyboardType="default"
+            />
+            <View style={styles.inputContainer}>
+              <TextInputComponent
+                value={password}
+                onChangeText={text => setPassword(text)}
+                placeholder={'Password'}
+                secureTextEntry={isPasswordHidden}
+              />
+              <TouchableOpacity
+                onPress={() => setIsPasswordHidden(!isPasswordHidden)}
+                style={styles.eyeIcon}>
+                <HideTextComponent isHidden={isPasswordHidden} />
+              </TouchableOpacity>
+            </View>
+          </View>
           <Text style={styles.forgetText}>Forgot Password ?</Text>
           <Button
             btnStyle={{marginTop: moderateScale(20)}}
@@ -88,9 +90,7 @@ export default function LoginPage({navigation, route}: any) {
             Don't have an account ?
             <Text
               style={styles.signinText}
-              onPress={() =>
-                navigation.navigate(navigationScreenNames.SIGNUP)
-              }>
+              onPress={() => navigation.navigate(navigationScreenNames.SIGNUP)}>
               Sign Up
             </Text>
           </Text>
@@ -142,5 +142,17 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginBottom: moderateScale(10),
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#ccc',
+    borderRadius: 5,
+    width: '100%',
+  },
+  eyeIcon: {
+    padding: 10,
+    position: 'absolute',
+    right: 10,
   },
 });
