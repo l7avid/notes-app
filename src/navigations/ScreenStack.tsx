@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {supabase} from '../lib/supabase';
 import {loginReducer} from '../redux/reducers/userAuth';
 import {RootState} from '../redux/store';
-import {AddNotePage} from '../screens/AddNotePage';
+import {HomePage} from '../screens/HomePage';
 import LoginPage from '../screens/LoginPage';
 import SignUpPage from '../screens/SignUpPage';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
@@ -63,7 +63,7 @@ export default function ScreenStack() {
       <Stack.Screen
         options={{headerShown: false}}
         name={navigationScreenNames.HOME}
-        component={isAuth ? AddNotePage : LoginPage}
+        component={isAuth ? HomePage : LoginPage}
         initialParams={{onLogin: login, loading: false}}></Stack.Screen>
       <Stack.Screen
         options={{headerShown: false}}

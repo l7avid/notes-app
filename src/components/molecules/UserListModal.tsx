@@ -1,26 +1,43 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
-  Modal,
+  Alert,
   FlatList,
+  Modal,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StyleSheet,
 } from 'react-native';
 import {Profile} from '../../lib/fetchProfileById';
 import colors from '../../styles/colors';
+import {supabase} from '../../lib/supabase';
 
 interface UserListModalProps {
   visible: boolean;
   users: Profile[];
+  noteId: string;
   onClose: () => void;
 }
 
 const UserListModal: React.FC<UserListModalProps> = ({
   visible,
   users,
+  noteId,
   onClose,
 }) => {
+  const [selectedUserId, setSelectedUserId] = useState('');
+
+  const handleShareWithUser = async (userId: string) => {
+    const {error} = await supabase
+      .from('users-notes')
+      .insert([{'user_id': userId, 'note_id': noteId}]);
+
+      if(error) {
+        console.log('Error sharing a note ' + error.message);
+        Alert.alert('Server Error', error.message);
+      }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -34,7 +51,7 @@ const UserListModal: React.FC<UserListModalProps> = ({
             keyExtractor={item => item!.id}
             renderItem={({item}) => (
               <View style={styles.userItem}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => handleShareWithUser(item!.id)}>
                   <Text style={styles.userName}>
                     {item?.username || item?.full_name || 'Unknown User'}
                   </Text>

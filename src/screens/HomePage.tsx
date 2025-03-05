@@ -12,7 +12,7 @@ import SignOutPage from './SignOutPage';
 import {Profile} from '../lib/fetchProfileById';
 import UserListModal from '../components/molecules/UserListModal';
 
-export const AddNotePage = ({navigation}: any) => {
+export const HomePage = ({navigation}: any) => {
   const userInfo: User = useSelector(
     (state: RootState) => state.userData.userData!,
   );
@@ -24,6 +24,7 @@ export const AddNotePage = ({navigation}: any) => {
 
   const [isUserListVisible, setIsUserListVisible] = useState(false);
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [selectedNoteId, setSelectedNoteId] = useState<string>('');
 
   const handleSubmit = async (content: string) => {
     const {data, error} = await supabase
@@ -83,10 +84,11 @@ export const AddNotePage = ({navigation}: any) => {
     }
   };
 
-  const handleSharePress = async () => {
+  const handleSharePress = async (noteId: string) => {
     const profiles = await handleShareWith(); // Fetch the list of users
     setProfiles(profiles); // Store the users in state
     setIsUserListVisible(true); // Show the modal
+    setSelectedNoteId(noteId);
   };
 
   return (
@@ -105,7 +107,7 @@ export const AddNotePage = ({navigation}: any) => {
             onEdit={(editedContent: string) =>
               handleEditNote(item.id, editedContent)
             }
-            onShare={handleSharePress}
+            onShare={() => handleSharePress(item.id)}
             shareData={profiles}
             isShareListVisible={isUserListVisible}
           />
@@ -113,6 +115,7 @@ export const AddNotePage = ({navigation}: any) => {
       <UserListModal
         visible={isUserListVisible}
         users={profiles}
+        noteId={selectedNoteId}
         onClose={() => setIsUserListVisible(false)} // Close the modal
       />
     </View>
