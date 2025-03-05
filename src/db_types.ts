@@ -14,18 +14,29 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          profile_id: string
         }
         Insert: {
           content: string
           created_at?: string
           id?: string
+          profile_id?: string
         }
         Update: {
           content?: string
           created_at?: string
           id?: string
+          profile_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "notes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
