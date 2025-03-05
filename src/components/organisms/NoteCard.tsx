@@ -17,7 +17,9 @@ interface Props {
   username: string;
   onDelete: () => void;
   onEdit: (editedContent: string) => void;
-  onShare: () => Promise<Profile[]>;
+  onShare: () => Promise<void>;
+  shareData: Profile[];
+  isShareListVisible: boolean;
 }
 
 export default function NoteCard({
@@ -26,11 +28,11 @@ export default function NoteCard({
   onDelete,
   onEdit,
   onShare,
+  shareData,
+  isShareListVisible
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(note.content);
-  const [isShareListVisible, setIsShareListVisible] = useState(false);
-  const [shareData, setShareData] = useState<Profile[]>([]);
 
   const handleEditPress = () => {
     setIsEditing(true);
@@ -42,10 +44,9 @@ export default function NoteCard({
   };
 
   const handleSharePress = async () => {
-    const data = await onShare(); // Call the onShare function to get the data
-    setShareData(data); // Set the share data
-    setIsShareListVisible(!isShareListVisible); // Show the list
+    await onShare(); // Trigger the onShare function
   };
+
 
   return (
     <View style={styles.container}>

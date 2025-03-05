@@ -9,7 +9,8 @@ import {supabase} from '../lib/supabase';
 import {RootState} from '../redux/store';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
 import SignOutPage from './SignOutPage';
-import { Profile } from '../lib/fetchProfileById';
+import {Profile} from '../lib/fetchProfileById';
+import UserListModal from '../components/molecules/UserListModal';
 
 export const AddNotePage = ({navigation}: any) => {
   const userInfo: User = useSelector(
@@ -20,6 +21,9 @@ export const AddNotePage = ({navigation}: any) => {
   if (!userInfo) {
     navigation.navigate(navigationScreenNames.LOGIN);
   }
+
+  const [isUserListVisible, setIsUserListVisible] = useState(false);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
 
   const handleSubmit = async (content: string) => {
     const {data, error} = await supabase
@@ -69,16 +73,20 @@ export const AddNotePage = ({navigation}: any) => {
   };
 
   const handleShareWith = async (): Promise<Profile[]> => {
-    const {data, error} = await supabase
-      .from('profiles')
-      .select('*');
+    const {data, error} = await supabase.from('profiles').select('*');
 
-      if (error) {
-        console.log(error);
-        return [];
-      } else {
-        return data;
-      }
+    if (error) {
+      console.log(error);
+      return [];
+    } else {
+      return data;
+    }
+  };
+
+  const handleSharePress = async () => {
+    const profiles = await handleShareWith(); // Fetch the list of users
+    setProfiles(profiles); // Store the users in state
+    setIsUserListVisible(true); // Show the modal
   };
 
   return (
@@ -97,9 +105,16 @@ export const AddNotePage = ({navigation}: any) => {
             onEdit={(editedContent: string) =>
               handleEditNote(item.id, editedContent)
             }
-            onShare={handleShareWith}
+            onShare={handleSharePress}
+            shareData={profiles}
+            isShareListVisible={isUserListVisible}
           />
         )}></FlatList>
+      <UserListModal
+        visible={isUserListVisible}
+        users={profiles}
+        onClose={() => setIsUserListVisible(false)} // Close the modal
+      />
     </View>
   );
 };
