@@ -1,14 +1,15 @@
-import { User } from '@supabase/supabase-js';
-import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import { AddNoteForm } from '../components/organisms/AddNoteForm';
+import {User} from '@supabase/supabase-js';
+import React, {useEffect, useState} from 'react';
+import {Alert, FlatList, StyleSheet, View} from 'react-native';
+import {useSelector} from 'react-redux';
+import {AddNoteForm} from '../components/organisms/AddNoteForm';
 import NoteCard from '../components/organisms/NoteCard';
-import { fetchNotes, Notes } from '../lib/api';
-import { supabase } from '../lib/supabase';
-import { RootState } from '../redux/store';
+import {fetchNotes, Notes} from '../lib/api';
+import {supabase} from '../lib/supabase';
+import {RootState} from '../redux/store';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
 import SignOutPage from './SignOutPage';
+import { Profile } from '../lib/fetchProfileById';
 
 export const AddNotePage = ({navigation}: any) => {
   const userInfo: User = useSelector(
@@ -37,9 +38,9 @@ export const AddNotePage = ({navigation}: any) => {
     fetchNotes().then(data => setNotes(data));
   }, []);
 
-  const handleDeleteNote = async(id: string) => {
+  const handleDeleteNote = async (id: string) => {
     const {error} = await supabase.from('notes').delete().eq('id', id);
-    if(error) {
+    if (error) {
       console.log(error);
       Alert.alert('Server Error', error.message);
     } else {
@@ -48,9 +49,9 @@ export const AddNotePage = ({navigation}: any) => {
   };
 
   const handleEditNote = async (id: string, newContent: string) => {
-    const { data, error } = await supabase
+    const {data, error} = await supabase
       .from('notes')
-      .update({ content: newContent })
+      .update({content: newContent})
       .eq('id', id)
       .select();
 
@@ -59,12 +60,25 @@ export const AddNotePage = ({navigation}: any) => {
       Alert.alert('Server Error', error.message);
     } else {
       // Update the local state with the edited note
-      setNotes((prevNotes) =>
-        prevNotes.map((note) =>
-          note.id === id ? { ...note, content: newContent } : note,
+      setNotes(prevNotes =>
+        prevNotes.map(note =>
+          note.id === id ? {...note, content: newContent} : note,
         ),
       );
     }
+  };
+
+  const handleShareWith = async (): Promise<Profile[]> => {
+    const {data, error} = await supabase
+      .from('profiles')
+      .select('*');
+
+      if (error) {
+        console.log(error);
+        return [];
+      } else {
+        return data;
+      }
   };
 
   return (
@@ -80,7 +94,10 @@ export const AddNotePage = ({navigation}: any) => {
             note={item}
             username={userInfo!.user_metadata['username']}
             onDelete={() => handleDeleteNote(item.id)}
-            onEdit={(editedContent: string) => handleEditNote(item.id, editedContent)}
+            onEdit={(editedContent: string) =>
+              handleEditNote(item.id, editedContent)
+            }
+            onShare={handleShareWith}
           />
         )}></FlatList>
     </View>
