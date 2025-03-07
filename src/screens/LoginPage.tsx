@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import Button from '../components/atoms/Button';
 import HideTextComponent from '../components/atoms/HideTextComponent';
 import TextInputComponent from '../components/atoms/TextInputComponent';
+import { RootState } from '../redux/store';
 import colors from '../styles/colors';
 import {
   height,
@@ -26,6 +28,14 @@ export default function LoginPage({navigation, route}: any) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
+
+  const isAuth = useSelector((state: RootState) => !!state.userData?.userData);
+
+  useEffect(() => {
+    if (isAuth) {
+      navigation.replace(navigationScreenNames.HOME);
+    }
+  }, [isAuth, navigation]);
 
   const handleSubmit = () => {
     onLogin({email, password});

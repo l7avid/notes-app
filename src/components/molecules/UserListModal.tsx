@@ -25,7 +25,6 @@ const UserListModal: React.FC<UserListModalProps> = ({
   noteId,
   onClose,
 }) => {
-  const [selectedUserId, setSelectedUserId] = useState('');
 
   const handleShareWithUser = async (userId: string) => {
     const {error} = await supabase

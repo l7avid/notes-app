@@ -1,15 +1,14 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   SignInWithPasswordCredentials,
   SignUpWithPasswordCredentials,
 } from '@supabase/supabase-js';
-import React, {useState} from 'react';
-import {Alert} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {supabase} from '../lib/supabase';
-import {loginReducer} from '../redux/reducers/userAuth';
-import {RootState} from '../redux/store';
-import {HomePage} from '../screens/HomePage';
+import React, { useState } from 'react';
+import { Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { supabase } from '../lib/supabase';
+import { loginReducer } from '../redux/reducers/userAuth';
+import { HomePage } from '../screens/HomePage';
 import LoginPage from '../screens/LoginPage';
 import SignUpPage from '../screens/SignUpPage';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
@@ -17,9 +16,6 @@ import navigationScreenNames from '../utils/constants/navigationScreenNames';
 const Stack = createNativeStackNavigator();
 
 export default function ScreenStack() {
-  const isAuth: boolean = !!useSelector(
-    (state: RootState) => state.userData?.userData,
-  );
   const dispatch = useDispatch();
   const [_loading, setLoading] = useState(false);
 
@@ -35,7 +31,6 @@ export default function ScreenStack() {
     if (error) {
       Alert.alert(error.message);
     }
-
     console.log(data);
     setLoading(false);
   };
@@ -53,28 +48,23 @@ export default function ScreenStack() {
     } else {
       dispatch(loginReducer(data.user));
     }
-
     console.log(data);
     setLoading(false);
   };
 
   return (
-    <>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name={navigationScreenNames.HOME} component={HomePage} />
       <Stack.Screen
-        options={{headerShown: false}}
-        name={navigationScreenNames.HOME}
-        component={isAuth ? HomePage : LoginPage}
-        initialParams={{onLogin: login, loading: false}}></Stack.Screen>
-      <Stack.Screen
-        options={{headerShown: false}}
         name={navigationScreenNames.LOGIN}
         component={LoginPage}
-        initialParams={{onLogin: login, loading: false}}></Stack.Screen>
+        initialParams={{onLogin: login, loading: false}}
+      />
       <Stack.Screen
-        options={{headerShown: false}}
         name={navigationScreenNames.SIGNUP}
         component={SignUpPage}
-        initialParams={{onSignUp: signUp, loading: false}}></Stack.Screen>
-    </>
+        initialParams={{onSignUp: signUp, loading: false}}
+      />
+    </Stack.Navigator>
   );
 }

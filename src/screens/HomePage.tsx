@@ -1,35 +1,41 @@
-import {User} from '@supabase/supabase-js';
-import React, {useEffect, useState} from 'react';
-import {Alert, FlatList, StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
-import {AddNoteForm} from '../components/organisms/AddNoteForm';
+import { User } from '@supabase/supabase-js';
+import React, { useEffect, useState } from 'react';
+import { Alert, FlatList, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import UserListModal from '../components/molecules/UserListModal';
+import { AddNoteForm } from '../components/organisms/AddNoteForm';
 import NoteCard from '../components/organisms/NoteCard';
-import {fetchNotes, Notes} from '../lib/api';
-import {supabase} from '../lib/supabase';
-import {RootState} from '../redux/store';
+import { fetchNotes, Notes } from '../lib/api';
+import { Profile } from '../lib/fetchProfileById';
+import { supabase } from '../lib/supabase';
+import { RootState } from '../redux/store';
 import navigationScreenNames from '../utils/constants/navigationScreenNames';
 import SignOutPage from './SignOutPage';
-import {Profile} from '../lib/fetchProfileById';
-import UserListModal from '../components/molecules/UserListModal';
 
-export const HomePage = ({navigation}: any) => {
-  const userInfo: User = useSelector(
-    (state: RootState) => state.userData.userData!,
+export const HomePage = ({ navigation }: any) => {
+  const userInfo: User | null = useSelector(
+    (state: RootState) => state.userData.userData
   );
+
+  const isAuth = useSelector((state: RootState) => !!state.userData?.userData);
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigation.replace(navigationScreenNames.LOGIN);
+    }
+  }, [userInfo, navigation]);
+
+  console.log("User Info: " + JSON.stringify(userInfo));
+
   const [notes, setNotes] = useState<Notes>([]);
-
-  if (!userInfo) {
-    navigation.navigate(navigationScreenNames.LOGIN);
-  }
-
   const [isUserListVisible, setIsUserListVisible] = useState(false);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [selectedNoteId, setSelectedNoteId] = useState<string>('');
 
   const handleSubmit = async (content: string) => {
-    const {data, error} = await supabase
+    const { data, error } = await supabase
       .from('notes')
-      .insert({content})
+      .insert({ content })
       .select();
     if (error) {
       console.log(error);
@@ -44,7 +50,7 @@ export const HomePage = ({navigation}: any) => {
   }, []);
 
   const handleDeleteNote = async (id: string) => {
-    const {error} = await supabase.from('notes').delete().eq('id', id);
+    const { error } = await supabase.from('notes').delete().eq('id', id);
     if (error) {
       console.log(error);
       Alert.alert('Server Error', error.message);
@@ -54,9 +60,9 @@ export const HomePage = ({navigation}: any) => {
   };
 
   const handleEditNote = async (id: string, newContent: string) => {
-    const {data, error} = await supabase
+    const { data, error } = await supabase
       .from('notes')
-      .update({content: newContent})
+      .update({ content: newContent })
       .eq('id', id)
       .select();
 
@@ -64,17 +70,16 @@ export const HomePage = ({navigation}: any) => {
       console.log(error);
       Alert.alert('Server Error', error.message);
     } else {
-      // Update the local state with the edited note
       setNotes(prevNotes =>
         prevNotes.map(note =>
-          note.id === id ? {...note, content: newContent} : note,
-        ),
+          note.id === id ? { ...note, content: newContent } : note
+        )
       );
     }
   };
 
   const handleShareWith = async (): Promise<Profile[]> => {
-    const {data, error} = await supabase.from('profiles').select('*');
+    const { data, error } = await supabase.from('profiles').select('*');
 
     if (error) {
       console.log(error);
@@ -85,38 +90,37 @@ export const HomePage = ({navigation}: any) => {
   };
 
   const handleSharePress = async (noteId: string) => {
-    const profiles = await handleShareWith(); // Fetch the list of users
-    setProfiles(profiles); // Store the users in state
-    setIsUserListVisible(true); // Show the modal
+    const profiles = await handleShareWith();
+    setProfiles(profiles);
+    setIsUserListVisible(true);
     setSelectedNoteId(noteId);
   };
 
   return (
     <View style={styles.container}>
       <SignOutPage />
-      <AddNoteForm onSubmit={handleSubmit}></AddNoteForm>
+      <AddNoteForm onSubmit={handleSubmit} />
       <FlatList
         data={notes}
         keyExtractor={item => item.id}
-        contentContainerStyle={{paddingTop: 8}}
-        renderItem={({item}) => (
+        contentContainerStyle={{ paddingTop: 8 }}
+        renderItem={({ item }) => (
           <NoteCard
             note={item}
-            username={userInfo!.user_metadata['username']}
+            username={userInfo?.user_metadata?.['username'] || 'Guest'}
             onDelete={() => handleDeleteNote(item.id)}
-            onEdit={(editedContent: string) =>
-              handleEditNote(item.id, editedContent)
-            }
+            onEdit={(editedContent: string) => handleEditNote(item.id, editedContent)}
             onShare={() => handleSharePress(item.id)}
             shareData={profiles}
             isShareListVisible={isUserListVisible}
           />
-        )}></FlatList>
+        )}
+      />
       <UserListModal
         visible={isUserListVisible}
         users={profiles}
         noteId={selectedNoteId}
-        onClose={() => setIsUserListVisible(false)} // Close the modal
+        onClose={() => setIsUserListVisible(false)}
       />
     </View>
   );
