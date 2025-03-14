@@ -15,23 +15,34 @@ export type Database = {
           created_at: string
           id: string
           profile_id: string
+          shared_by: string
+          shared_by_username?: string;
         }
         Insert: {
           content: string
           created_at?: string
           id?: string
           profile_id?: string
+          shared_by?: string
         }
         Update: {
           content?: string
           created_at?: string
           id?: string
           profile_id?: string
+          shared_by?: string
         }
         Relationships: [
           {
             foreignKeyName: "notes_profile_id_fkey"
             columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notes_shared_by_fkey"
+            columns: ["shared_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -96,17 +107,17 @@ export type Database = {
         Row: {
           id: string
           note_id: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           id?: string
           note_id?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Update: {
           id?: string
           note_id?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -120,7 +131,7 @@ export type Database = {
             foreignKeyName: "users-notes_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

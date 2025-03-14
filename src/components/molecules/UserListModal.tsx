@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import { User } from '@supabase/supabase-js';
+import React from 'react';
 import {
   Alert,
   FlatList,
@@ -8,33 +9,39 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Profile} from '../../lib/fetchProfileById';
+import { useSelector } from 'react-redux';
+import { Profile } from '../../lib/fetchProfileById';
+import { supabase } from '../../lib/supabase';
+import { RootState } from '../../redux/store';
 import colors from '../../styles/colors';
-import {supabase} from '../../lib/supabase';
 
 interface UserListModalProps {
   visible: boolean;
   users: Profile[];
   noteId: string;
   onClose: () => void;
+  content: string;
 }
 
 const UserListModal: React.FC<UserListModalProps> = ({
   visible,
   users,
-  noteId,
   onClose,
+  content,
 }) => {
+  const userInfo: User | null = useSelector(
+    (state: RootState) => state.userData.userData,
+  );
 
   const handleShareWithUser = async (userId: string) => {
     const {error} = await supabase
-      .from('users-notes')
-      .insert([{'user_id': userId, 'note_id': noteId}]);
+      .from('notes')
+      .insert([{profile_id: userId, content: content, shared_by: userInfo!.id}]);
 
-      if(error) {
-        console.log('Error sharing a note ' + error.message);
-        Alert.alert('Server Error', error.message);
-      }
+    if (error) {
+      console.log('Error sharing a note ' + error.message);
+      Alert.alert('Server Error', error.message);
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,9 +8,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Share from 'react-native-vector-icons/Feather';
-import { Note } from '../../lib/api';
+import {Note} from '../../lib/api';
 import colors from '../../styles/colors';
-import { Profile } from '../../lib/fetchProfileById';
 
 interface Props {
   note: Note;
@@ -18,8 +17,7 @@ interface Props {
   onDelete: () => void;
   onEdit: (editedContent: string) => void;
   onShare: () => Promise<void>;
-  shareData: Profile[];
-  isShareListVisible: boolean;
+  showIcon: boolean;
 }
 
 export default function NoteCard({
@@ -28,8 +26,7 @@ export default function NoteCard({
   onDelete,
   onEdit,
   onShare,
-  shareData,
-  isShareListVisible
+  showIcon,
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(note.content);
@@ -46,7 +43,6 @@ export default function NoteCard({
   const handleSharePress = async () => {
     await onShare(); // Trigger the onShare function
   };
-
 
   return (
     <View style={styles.container}>
@@ -66,15 +62,16 @@ export default function NoteCard({
           <Text style={styles.contentText}>{note.content}</Text>
         )}
         <View style={styles.footer}>
-          {isEditing ? (
-            <TouchableOpacity onPress={handleSavePress}>
-              <Icon name="save" size={24} color={colors.btnColor}></Icon>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={handleEditPress}>
-              <Icon name="edit" size={24} color={colors.btnColor}></Icon>
-            </TouchableOpacity>
-          )}
+          {showIcon &&
+            (isEditing ? (
+              <TouchableOpacity onPress={handleSavePress}>
+                <Icon name="save" size={24} color={colors.btnColor}></Icon>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={handleEditPress}>
+                <Icon name="edit" size={24} color={colors.btnColor}></Icon>
+              </TouchableOpacity>
+            ))}
           <TouchableOpacity
             style={styles.shareButton}
             onPress={handleSharePress}>
@@ -84,16 +81,6 @@ export default function NoteCard({
             <Icon name="delete" size={24} color={colors.red}></Icon>
           </TouchableOpacity>
         </View>
-        {isShareListVisible && (
-          <View style={styles.shareList}>
-            { shareData.length !== 0 &&
-            shareData.map(item => (
-              <TouchableOpacity key={item?.id} style={styles.shareListItem}>
-                <Text>{item!.username}</Text>
-              </TouchableOpacity> 
-            ))}
-          </View>
-        )}
       </View>
     </View>
   );
