@@ -10,8 +10,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import Route from './src/navigations/Route';
-import { store } from './src/redux/store';
+import Route from './src/adapters/navigations/Route';
+import { store } from './src/adapters/redux/store';
 
 function App(): JSX.Element {
   return (

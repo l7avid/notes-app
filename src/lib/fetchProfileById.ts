@@ -1,4 +1,5 @@
-import {supabase} from './supabase';
+/* eslint-disable prettier/prettier */
+import { supabase } from './supabase';
 
 export const fetchProfileById = async (id: string) => {
   const {data, error} = await supabase

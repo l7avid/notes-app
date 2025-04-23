@@ -1,4 +1,5 @@
-import {supabase} from './supabase';
+/* eslint-disable prettier/prettier */
+import { supabase } from './supabase';
 
 export const fetchNotes = async () => {
   const {data, error} = await supabase
@@ -17,4 +18,4 @@ export const fetchNotes = async () => {
 };
 
 export type Notes = Awaited<ReturnType<typeof fetchNotes>>;
-export type Note = Notes[number]
+export type Note = Notes[number];

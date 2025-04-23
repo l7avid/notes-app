@@ -1,9 +1,10 @@
-import {supabase} from './supabase';
+/* eslint-disable prettier/prettier */
+import { supabase } from './supabase';
 
 export const fetchUserNotes = async (userId: string) => {
   const {data, error} = await supabase
     .from('notes')
-    .select('*, profiles!shared_by(username)') // Fetch username from profiles
+    .select('*, profiles!shared_by(username)')
     .eq('profile_id', userId);
 
   if (error) {
