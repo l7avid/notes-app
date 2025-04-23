@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { User } from '@supabase/supabase-js';
 import React from 'react';
 import {
@@ -29,6 +30,7 @@ const UserListModal: React.FC<UserListModalProps> = ({
   onClose,
   content,
 }) => {
+  // istanbul ignore next
   const userInfo: User | null = useSelector(
     (state: RootState) => state.userData.userData,
   );
@@ -36,7 +38,9 @@ const UserListModal: React.FC<UserListModalProps> = ({
   const handleShareWithUser = async (userId: string) => {
     const {error} = await supabase
       .from('notes')
-      .insert([{profile_id: userId, content: content, shared_by: userInfo!.id}]);
+      .insert([
+        {profile_id: userId, content: content, shared_by: userInfo!.id},
+      ]);
 
     if (error) {
       console.log('Error sharing a note ' + error.message);
@@ -56,7 +60,7 @@ const UserListModal: React.FC<UserListModalProps> = ({
             data={users}
             keyExtractor={item => item!.id}
             renderItem={({item}) => (
-              <View style={styles.userItem}>
+              <View style={styles.userItem} testID="user-item">
                 <TouchableOpacity onPress={() => handleShareWithUser(item!.id)}>
                   <Text style={styles.userName}>
                     {item?.username || item?.full_name || 'Unknown User'}

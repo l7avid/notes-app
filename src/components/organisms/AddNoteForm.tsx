@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
-import Button from '../atoms/Button';
+/* eslint-disable prettier/prettier */
+import React, { useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 import { width } from '../../styles/responsiveSize';
-
+import Button from '../atoms/Button';
 
 interface Props {
   onSubmit: (content: string) => void;
@@ -21,18 +21,18 @@ export const AddNoteForm = ({onSubmit}: Props) => {
       />
       <Button
         btnStyle={styles.button}
-        btnText="Post" 
+        btnText="Post"
         onPress={() => {
-          onSubmit(content)
-          setContent('')
-        }}></Button>
+          onSubmit(content);
+          setContent('');
+        }} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: '100%',
     padding: 16,
   },
   input: {
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   button: {
-    width: width/3,
+    width: width / 3,
     marginTop: 10,
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
 });

@@ -1,25 +1,17 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable prettier/prettier */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
  *
  * @format
  */
-
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import LoginPage from './src/screens/LoginPage';
-import {View} from 'react-native';
+import { View } from 'react-native';
+import { Provider } from 'react-redux';
 import Route from './src/navigations/Route';
-import {Provider} from 'react-redux';
-import {store} from './src/redux/store';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-const Stack = createNativeStackNavigator();
+import { store } from './src/redux/store';
 
 function App(): JSX.Element {
   return (

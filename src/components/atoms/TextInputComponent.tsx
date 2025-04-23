@@ -1,15 +1,22 @@
-import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions, StyleProp, TextStyle, DimensionValue } from 'react-native'
-import React from 'react'
-import colors from '../../styles/colors'
-import { moderateScale, width } from '../../styles/responsiveSize'
+/* eslint-disable prettier/prettier */
+import React from 'react';
+import {
+  DimensionValue,
+  KeyboardTypeOptions,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
+import colors from '../../styles/colors';
+import { moderateScale, width } from '../../styles/responsiveSize';
 
 interface ITextInputProps {
-  placeholder?: string,
-  onChangeText?: (text: string) => void,
-  value?: string,
-  secureTextEntry?: boolean,
-  keyboardType?: KeyboardTypeOptions,
-  marginBottom?: DimensionValue
+  placeholder?: string;
+  onChangeText?: (text: string) => void;
+  value?: string;
+  secureTextEntry?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  marginBottom?: DimensionValue;
 }
 
 export default function TextInputComponent(props: ITextInputProps) {
@@ -18,13 +25,13 @@ export default function TextInputComponent(props: ITextInputProps) {
       <TextInput
         onChangeText={props.onChangeText}
         placeholder={props.placeholder}
-        style={{...styles.inputStyle,marginBottom: props.marginBottom}}
+        style={{...styles.inputStyle, marginBottom: props.marginBottom}}
         value={props.value}
         secureTextEntry={props.secureTextEntry}
         keyboardType={props.keyboardType}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -37,6 +44,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(12),
     fontSize: moderateScale(13),
     fontWeight: '500',
-    color: colors.black
-  }
-})
+    color: colors.black,
+  },
+});

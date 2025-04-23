@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
 import {
   Image,
@@ -57,9 +59,9 @@ export default function LoginPage({navigation, route}: any) {
           resizeMode="cover"
           imageStyle={styles.imageBackStyle}
           source={imagePath.headerIc}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          {/* <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image source={imagePath.backIc}></Image>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ImageBackground>
 
         <View style={styles.containViewStyle}>
@@ -89,7 +91,7 @@ export default function LoginPage({navigation, route}: any) {
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={styles.forgetText}>Forgot Password ?</Text>
+
           <Button
             btnStyle={{marginTop: moderateScale(20)}}
             btnText={'Sign In'}
@@ -97,7 +99,7 @@ export default function LoginPage({navigation, route}: any) {
             onPress={handleSubmit}
           />
           <Text style={styles.readyText}>
-            Don't have an account ?
+            Don't have an account?{' '}
             <Text
               style={styles.signinText}
               onPress={() => navigation.navigate(navigationScreenNames.SIGNUP)}>

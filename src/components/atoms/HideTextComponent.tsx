@@ -1,14 +1,15 @@
-import {View, Text} from 'react-native';
+/* eslint-disable prettier/prettier */
 import React from 'react';
-import {HideTextComponentProps} from '../../interfaces/HideTextComponentProps'
+import { HideTextComponentProps } from '../../interfaces/HideTextComponentProps';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const HideTextComponent: React.FC<HideTextComponentProps> = (isPasswordHidden) => {
+const HideTextComponent: React.FC<
+  HideTextComponentProps> = ({isHidden}) => {
   return (
     <>
       <Icon
-        name={isPasswordHidden ? 'eye-off' : 'eye'}
+        name={isHidden ? 'eye-off' : 'eye'}
         size={24}
         color="gray"
       />
