@@ -58,6 +58,7 @@ export default function NoteCard({
             onChangeText={setEditedContent}
             multiline
             autoFocus
+            placeholder="Edit note"
           />
         ) : (
           <Text style={styles.contentText}>{note.content}</Text>
@@ -65,20 +66,21 @@ export default function NoteCard({
         <View style={styles.footer}>
           {showIcon &&
             (isEditing ? (
-              <TouchableOpacity onPress={handleSavePress}>
+              <TouchableOpacity onPress={handleSavePress} testID='save-button'>
                 <Icon name="save" size={24} color={colors.btnColor} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity onPress={handleEditPress}>
+              <TouchableOpacity onPress={handleEditPress} testID='edit-button'>
                 <Icon name="edit" size={24} color={colors.btnColor} />
               </TouchableOpacity>
             ))}
           <TouchableOpacity
             style={styles.shareButton}
-            onPress={handleSharePress}>
+            onPress={handleSharePress}
+            testID="share-button">
             <Share name="share" size={24} color={colors.btnColor} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteButton} onPress={onDelete}>
+          <TouchableOpacity style={styles.deleteButton} onPress={onDelete} testID="delete-button">
             <Icon name="delete" size={24} color={colors.red} />
           </TouchableOpacity>
         </View>
