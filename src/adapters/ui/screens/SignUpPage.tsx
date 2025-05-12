@@ -2,6 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import {
+  Alert,
   Image,
   ImageBackground,
   ScrollView,
@@ -35,8 +36,14 @@ export default function SignUpPage({navigation, route}: any) {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isConfirmPasswordHidden, setIsConfirmPasswordHidden] = useState(true);
 
-  const handleSubmit = () => {
-    onSignUp({email, password, options: {data: {username, full_name}}});
+  const handleSubmit = async () => {
+    const result = await onSignUp({email, password, options: {data: {username, full_name}}});
+
+    if (result?.error) {
+      Alert.alert('Sign Up failed', result.error.message);
+    } else {
+      Alert.alert('Check your Email', 'Please review your mailbox to confirm your account');
+    }
   };
 
   return (

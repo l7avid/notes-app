@@ -11,5 +11,7 @@ module.exports = {
   moduleNameMapper: {
     '^react-native-vector-icons/MaterialCommunityIcons$':
       '<rootDir>/__mocks__/react-native-vector-icons/MaterialCommunityIcons.js',
+    '^react-native-url-polyfill/auto$':
+      '<rootDir>/__mocks__/react-native-url-polyfill/auto.js',
   },
 };

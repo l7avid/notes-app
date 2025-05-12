@@ -29,11 +29,9 @@ export default function ScreenStack() {
       password,
       options,
     });
-    if (error) {
-      Alert.alert(error.message);
-    }
     console.log(data);
     setLoading(false);
+    return {error, data};
   };
 
   const login = async (credentials: SignInWithPasswordCredentials) => {
