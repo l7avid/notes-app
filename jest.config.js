@@ -3,7 +3,7 @@ module.exports = {
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
   setupFiles: ['<rootDir>/jest.setup.ts'],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|react-native-vector-icons|@react-native|@react-native-community)/)',
+    'node_modules/(?!(react-native|react-native-vector-icons|@react-native|@react-native-community|@react-navigation)/)',
   ],
   transform: {
     '^.+\\.[t|j]sx?$': 'babel-jest',
