@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   SignInWithPasswordCredentials,
   SignUpWithPasswordCredentials,
 } from '@supabase/supabase-js';
-import React, { useState } from 'react';
-import { Alert } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { supabase } from '../../lib/supabase';
+import React, {useState} from 'react';
+import {Alert} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {supabase} from '../../lib/supabase';
 import navigationScreenNames from '../../utils/constants/navigationScreenNames';
-import { loginReducer } from '../redux/reducers/userAuth';
-import { HomePage } from '../ui/screens/HomePage';
+import {loginReducer} from '../redux/reducers/userAuth';
+import {HomePage} from '../ui/screens/HomePage';
 import LoginPage from '../ui/screens/LoginPage';
 import SignUpPage from '../ui/screens/SignUpPage';
 
@@ -21,7 +21,9 @@ export default function ScreenStack() {
   const [_loading, setLoading] = useState(false);
 
   const signUp = async (credentials: SignUpWithPasswordCredentials) => {
-    if (!('email' in credentials)) {return;}
+    if (!('email' in credentials) || !credentials.email) {
+      return;
+    }
     setLoading(true);
     const {email, password, options} = credentials;
     const {error, data} = await supabase.auth.signUp({
@@ -35,7 +37,9 @@ export default function ScreenStack() {
   };
 
   const login = async (credentials: SignInWithPasswordCredentials) => {
-    if (!('email' in credentials)) {return;}
+    if (!('email' in credentials)) {
+      return;
+    }
     setLoading(true);
     const {email, password} = credentials;
     const {error, data} = await supabase.auth.signInWithPassword({
