@@ -55,13 +55,17 @@ export default function SignUpPage({navigation, route}: any) {
           backgroundColor: colors.themebackgroundcolor,
         }}>
         <ScrollView bounces={false}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            testID="button"
+            onPress={() => navigation.goBack()}>
             <ImageBackground
               style={styles.backgroundStyle}
               resizeMode="cover"
               imageStyle={styles.imageBackStyle}
               source={imagePath.headerIc}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
+              <TouchableOpacity
+                testID="button-back"
+                onPress={() => navigation.goBack()}>
                 <Image source={imagePath.backIc} />
               </TouchableOpacity>
             </ImageBackground>
@@ -92,6 +96,7 @@ export default function SignUpPage({navigation, route}: any) {
                   secureTextEntry={isPasswordHidden}
                 />
                 <TouchableOpacity
+                  testID="button-password"
                   onPress={() => setIsPasswordHidden(!isPasswordHidden)}
                   style={styles.eyeIcon}>
                   <HideTextComponent isHidden={isPasswordHidden} />
@@ -105,6 +110,7 @@ export default function SignUpPage({navigation, route}: any) {
                   secureTextEntry={isConfirmPasswordHidden}
                 />
                 <TouchableOpacity
+                  testID="button-confirm-password"
                   onPress={() =>
                     setIsConfirmPasswordHidden(!isConfirmPasswordHidden)
                   }
