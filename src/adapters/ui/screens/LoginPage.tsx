@@ -86,6 +86,7 @@ export default function LoginPage({navigation, route}: any) {
               />
               <TouchableOpacity
                 onPress={() => setIsPasswordHidden(!isPasswordHidden)}
+                testID="password-visibility-toggle"
                 style={styles.eyeIcon}>
                 <HideTextComponent isHidden={isPasswordHidden} />
               </TouchableOpacity>
