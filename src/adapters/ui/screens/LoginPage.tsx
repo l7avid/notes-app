@@ -66,9 +66,6 @@ export default function LoginPage({navigation, route}: any) {
           resizeMode="cover"
           imageStyle={styles.imageBackStyle}
           source={imagePath.headerIc}>
-          {/* <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image source={imagePath.backIc}></Image>
-          </TouchableOpacity> */}
         </ImageBackground>
 
         <View style={styles.containViewStyle}>
