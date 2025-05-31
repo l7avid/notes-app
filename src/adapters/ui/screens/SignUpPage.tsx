@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Image,
@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import 'react-native-url-polyfill/auto';
 import colors from '../../../styles/colors';
 import {
@@ -27,24 +27,52 @@ import HideTextComponent from '../components/atoms/HideTextComponent';
 import TextInputComponent from '../components/atoms/TextInputComponent';
 
 export default function SignUpPage({navigation, route}: any) {
-  const {onSignUp, loading} = route.params;
-  const [full_name, setFullName] = useState('');
+  const {onSignUp} = route.params;
+  const [full_name, setFullName] = useState<string>('');
   const [username, setUsername] = useState<string>('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-  const [isConfirmPasswordHidden, setIsConfirmPasswordHidden] = useState(true);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
+  const [isConfirmPasswordHidden, setIsConfirmPasswordHidden] = useState<boolean>(true);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleSubmit = async () => {
-    const result = await onSignUp({email, password, options: {data: {username, full_name}}});
+    const result = await onSignUp({
+      email,
+      password,
+      options: {data: {username, full_name}},
+    });
 
     if (result?.error) {
       Alert.alert('Sign Up failed', result.error.message);
     } else {
-      Alert.alert('Check your Email', 'Please review your mailbox to confirm your account');
+      Alert.alert(
+        'Check your Email',
+        'Please review your mailbox to confirm your account',
+      );
     }
+    navigation.navigate(navigationScreenNames.LOGIN);
   };
+
+  useEffect(() => {
+  const isValid =
+    !!full_name.trim() &&
+    !!username.trim() &&
+    !!email.trim() &&
+    !!password.trim() &&
+    !!confirmPassword.trim();
+
+  const passwordMatch = password === confirmPassword;
+
+  const shouldEnable = isValid && passwordMatch;
+
+  setIsDisabled(!shouldEnable);
+
+  // Optional debug logs
+  console.log({ isValid, passwordMatch, shouldEnable });
+}, [full_name, username, email, password, confirmPassword]);
+
 
   return (
     <SafeAreaView
@@ -55,9 +83,7 @@ export default function SignUpPage({navigation, route}: any) {
           backgroundColor: colors.themebackgroundcolor,
         }}>
         <ScrollView bounces={false}>
-          <TouchableOpacity
-            testID="button"
-            onPress={() => navigation.goBack()}>
+          <TouchableOpacity testID="button" onPress={() => navigation.goBack()}>
             <ImageBackground
               style={styles.backgroundStyle}
               resizeMode="cover"
@@ -122,7 +148,7 @@ export default function SignUpPage({navigation, route}: any) {
                 onPress={handleSubmit}
                 btnStyle={{marginTop: moderateScale(98)}}
                 btnText={'Sign Up'}
-                disabled={loading}
+                disabled={isDisabled}
               />
               <Text style={styles.readyText}>
                 {' '}

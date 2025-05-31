@@ -61,12 +61,12 @@ export default function ScreenStack() {
       <Stack.Screen
         name={navigationScreenNames.LOGIN}
         component={LoginPage}
-        initialParams={{onLogin: login, loading: false}}
+        initialParams={{onLogin: login}}
       />
       <Stack.Screen
         name={navigationScreenNames.SIGNUP}
         component={SignUpPage}
-        initialParams={{onSignUp: signUp, loading: false}}
+        initialParams={{onSignUp: signUp}}
       />
     </Stack.Navigator>
   );

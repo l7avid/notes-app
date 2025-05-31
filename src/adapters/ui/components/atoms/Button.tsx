@@ -10,14 +10,18 @@ import {
   ViewStyle,
 } from 'react-native';
 import colors from '../../../../styles/colors';
-import { moderateScale, textScale, width } from '../../../../styles/responsiveSize';
+import {
+  moderateScale,
+  textScale,
+  width,
+} from '../../../../styles/responsiveSize';
 
 interface ButtonProps {
   testID?: string;
   btnText: string;
   btnStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
-  disabled?: StyleProp<boolean>;
+  disabled?: boolean;
   onPress?: () => void;
 }
 
@@ -29,9 +33,27 @@ export default function Button({
   onPress,
   disabled,
 }: ButtonProps) {
+  console.log({disabled});
+
+  const combinedStyle = [
+    styles.btnStyle,
+    disabled && styles.btnDisabled, // 👈 Apply disabled style conditionally
+    btnStyle,
+  ];
+
+  const combinedTextStyle = [
+    styles.bntTextStyle,
+    disabled && styles.textDisabled, // 👈 Optional: style text too
+    textStyle,
+  ];
+
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.btnStyle, btnStyle]} testID={testID}>
-      <Text style={[styles.bntTextStyle, textStyle]}>{btnText}</Text>
+    <TouchableOpacity
+      onPress={onPress}
+      style={combinedStyle}
+      testID={testID}
+      disabled={!!disabled}>
+      <Text style={combinedTextStyle}>{btnText}</Text>
     </TouchableOpacity>
   );
 }
@@ -44,9 +66,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: moderateScale(44),
   },
+  btnDisabled: {
+    backgroundColor: '#cccccc', // 👈 Gray or a lighter tone
+  },
   bntTextStyle: {
     fontSize: textScale(14),
     color: colors.white,
     lineHeight: textScale(14),
+  },
+  textDisabled: {
+    color: '#666666', // 👈 Dim text when disabled
   },
 });
