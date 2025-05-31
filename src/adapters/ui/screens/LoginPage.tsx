@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -10,11 +10,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import Button from '../components/atoms/Button';
 import HideTextComponent from '../components/atoms/HideTextComponent';
 import TextInputComponent from '../components/atoms/TextInputComponent';
-import { RootState } from '../../redux/store';
+import {RootState} from '../../redux/store';
 import colors from '../../../styles/colors';
 import {
   height,
@@ -30,6 +30,7 @@ export default function LoginPage({navigation, route}: any) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isPasswordHidden, setIsPasswordHidden] = useState<boolean>(true);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const isAuth = useSelector((state: RootState) => !!state.userData?.userData);
 
@@ -38,6 +39,12 @@ export default function LoginPage({navigation, route}: any) {
       navigation.replace(navigationScreenNames.HOME);
     }
   }, [isAuth, navigation]);
+
+  useEffect(() => {
+    const isValid = !!email.trim() && !!password.trim();
+    const shouldEnable = isValid;
+    setIsDisabled(!shouldEnable);
+  }, [email, password]);
 
   const handleSubmit = () => {
     onLogin({email, password});
@@ -98,6 +105,7 @@ export default function LoginPage({navigation, route}: any) {
             btnStyle={{marginTop: moderateScale(20)}}
             btnText={'Sign In'}
             onPress={handleSubmit}
+            disabled={isDisabled}
           />
           <Text style={styles.readyText}>
             Don't have an account?{' '}
