@@ -3,7 +3,6 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { Alert } from 'react-native';
 import { useSelector } from 'react-redux';
-import { act } from 'react-test-renderer';
 import { HomePage } from '../../../../src/adapters/ui/screens/HomePage';
 import * as fetchNotes from '../../../../src/lib/fetchAllNotes';
 import { supabase } from '../../../../src/lib/supabase';
@@ -82,7 +81,7 @@ jest.mock('../../../../src/lib/supabase', () => {
           select: mockSelect,
         })),
         delete: jest.fn(() => ({
-          eq: jest.fn().mockResolvedValue({data: {}, error: null}),
+          eq: mockEq,
         })),
         update: jest.fn(() => ({
           eq: mockEq,

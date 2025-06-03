@@ -5,7 +5,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { supabase } from '../../../../src/lib/supabase';
 import { logoutReducer } from '../../../../src/adapters/redux/reducers/userAuth';
-import SignOutPage from '../../../../src/adapters/ui/screens/SignOutPage'; // Adjust path as needed
+import SignOutPage from '../../../../src/adapters/ui/screens/SignOutPage';
 
 jest.mock('@react-native-async-storage/async-storage');
 jest.mock('react-redux', () => ({
@@ -71,9 +71,8 @@ describe('SignOutPage', () => {
   });
 
   it('calls console.error when an unexpected error occurs', async () => {
-    const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {}); // Mock console.error
+    const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    // Simulate an error in signOut by making it reject
     (supabase.auth.signOut as jest.Mock).mockImplementationOnce(() =>
       Promise.reject(new Error('Unexpected error'))
     );
@@ -87,7 +86,6 @@ describe('SignOutPage', () => {
       expect(consoleErrorMock).toHaveBeenCalledWith('Unexpected error:', expect.any(Error));
     });
 
-    // Restore console.error after the test
     consoleErrorMock.mockRestore();
   });
 });

@@ -1,5 +1,5 @@
 import { store } from "../../../src/adapters/redux/store";
-import { loginReducer, logoutReducer } from "../../../src/adapters/redux/reducers/userAuth"; // example action creators
+import { loginReducer, logoutReducer } from "../../../src/adapters/redux/reducers/userAuth";
 
 describe('userAuth reducer', () => {
   it('should handle login action', () => {

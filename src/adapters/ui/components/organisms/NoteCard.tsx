@@ -37,12 +37,12 @@ export default function NoteCard({
   };
 
   const handleSavePress = () => {
-    onEdit(editedContent); // Call the onEdit prop with the edited content
+    onEdit(editedContent);
     setIsEditing(false);
   };
 
   const handleSharePress = async () => {
-    await onShare(); // Trigger the onShare function
+    await onShare();
   };
 
   return (

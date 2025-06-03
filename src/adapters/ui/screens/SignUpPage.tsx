@@ -69,7 +69,6 @@ export default function SignUpPage({navigation, route}: any) {
 
   setIsDisabled(!shouldEnable);
 
-  // Optional debug logs
   console.log({ isValid, passwordMatch, shouldEnable });
 }, [full_name, username, email, password, confirmPassword]);
 

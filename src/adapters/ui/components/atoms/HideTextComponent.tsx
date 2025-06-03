@@ -9,7 +9,7 @@ const HideTextComponent: React.FC<
   return (
     <>
       <Icon
-        name={isHidden ? 'eye-off' : 'eye'}
+        name={isHidden ? 'eye' : 'eye-off'}
         size={24}
         color="gray"
       />

@@ -1,7 +1,6 @@
 import { fetchUserNotes } from '../../src/lib/fetchAllNotes';
 import { supabase } from '../../src/lib/supabase';
 
-// Mock the supabase client methods
 jest.mock('../../src/lib/supabase', () => ({
   supabase: {
     from: jest.fn(),

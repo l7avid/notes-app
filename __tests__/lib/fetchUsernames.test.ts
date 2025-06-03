@@ -1,4 +1,4 @@
-import {fetchUsernames} from '../../src/lib/fetchUsernames'; // adjust path if needed
+import {fetchUsernames} from '../../src/lib/fetchUsernames';
 import {supabase} from '../../src/lib/supabase';
 
 type Note = {
@@ -10,7 +10,6 @@ type Note = {
   shared_by_username?: string | undefined;
 };
 
-// Mock supabase
 jest.mock('../../src/lib/supabase', () => ({
   supabase: {
     from: jest.fn(),

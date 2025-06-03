@@ -1,8 +1,6 @@
-// __tests__/Route.test.tsx
 import {render} from '@testing-library/react-native';
 import Route from '../../../src/adapters/navigations/Route';
 
-// Mock ScreenStack component that gets rendered inside the stack
 jest.mock('../../../src/adapters/navigations/ScreenStack', () => {
   const React = require('react');
   const {Text} = require('react-native');

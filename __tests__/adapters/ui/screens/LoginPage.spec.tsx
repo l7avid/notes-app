@@ -2,7 +2,7 @@
 import {fireEvent, render} from '@testing-library/react-native';
 import React from 'react';
 import {useSelector} from 'react-redux';
-import LoginPage from '../../../../src/adapters/ui/screens/LoginPage'; // Adjust path as needed
+import LoginPage from '../../../../src/adapters/ui/screens/LoginPage';
 import navigationScreenNames from '../../../../src/utils/constants/navigationScreenNames';
 
 jest.mock('react-redux', () => ({
@@ -40,7 +40,7 @@ describe('LoginPage', () => {
   it('calls onLogin with correct credentials', () => {
     const onLoginMock = jest.fn();
     (useSelector as unknown as jest.Mock).mockImplementation(
-      selector => selector({userData: null}), // `!!null` === false
+      selector => selector({userData: null}),
     );
 
     const {getByPlaceholderText, getByText} = render(
@@ -79,7 +79,7 @@ describe('LoginPage', () => {
 
   it('navigates to signup page on Sign Up press', () => {
     (useSelector as unknown as jest.Mock).mockImplementation(
-      selector => selector({userData: null}), // `!!null` === false
+      selector => selector({userData: null}),
     );
 
     const {getByText} = render(
@@ -97,7 +97,7 @@ describe('LoginPage', () => {
 
   it('does not throw if route.params is undefined', () => {
     (useSelector as unknown as jest.Mock).mockImplementation(
-      selector => selector({userData: null}), // `!!null` === false
+      selector => selector({userData: null}),
     );
 
     expect(() => {

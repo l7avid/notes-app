@@ -6,13 +6,11 @@ import {useDispatch} from 'react-redux';
 import navigationScreenNames from '../../../src/utils/constants/navigationScreenNames';
 import {loginReducer} from '../../../src/adapters/redux/reducers/userAuth';
 
-// Mock Redux
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
   useSelector: jest.fn(),
 }));
 
-// Mock Supabase
 jest.mock('../../../src/lib/supabase', () => ({
   supabase: {
     auth: {
@@ -84,7 +82,6 @@ jest.mock('../../../src/adapters/ui/screens/SignUpPage', () => {
   };
 });
 
-// ✅ Test
 describe('ScreenStack logic', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -133,7 +130,6 @@ describe('ScreenStack logic', () => {
     const supabase = require('../../../src/lib/supabase').supabase;
     supabase.auth.signUp.mockClear();
 
-    // Re-mock SignUpPage with missing email
     jest.doMock('../../../src/adapters/ui/screens/SignUpPage', () => {
       const React = require('react');
       const {Button, Text} = require('react-native');
@@ -148,7 +144,6 @@ describe('ScreenStack logic', () => {
                 title="Trigger Invalid SignUp"
                 onPress={() =>
                   onSignUp({
-                    // Missing email here
                     password: '1234',
                     options: {},
                   })
@@ -160,7 +155,6 @@ describe('ScreenStack logic', () => {
       };
     });
 
-    // Re-import the updated version of ScreenStack
     const ScreenStackUpdated =
       require('../../../src/adapters/navigations/ScreenStack').default;
 
@@ -173,7 +167,6 @@ describe('ScreenStack logic', () => {
     fireEvent.press(getByRole('button'));
 
     await waitFor(() => {
-      // Check that signUp was NOT called due to missing email
       expect(supabase.auth.signUp).not.toHaveBeenCalled();
     });
   });
@@ -182,7 +175,6 @@ describe('ScreenStack logic', () => {
     const supabase = require('../../../src/lib/supabase').supabase;
     supabase.auth.signUp.mockClear();
 
-    // Re-mock SignUpPage with missing email
     jest.doMock('../../../src/adapters/ui/screens/LoginPage', () => {
       const React = require('react');
       const {Button, Text} = require('react-native');
@@ -197,7 +189,6 @@ describe('ScreenStack logic', () => {
                 title="Trigger Invalid Login"
                 onPress={() =>
                   onLogin({
-                    // Missing email here
                     password: '1234',
                     options: {},
                   })
@@ -209,7 +200,6 @@ describe('ScreenStack logic', () => {
       };
     });
 
-    // Re-import the updated version of ScreenStack
     const ScreenStackUpdated =
       require('../../../src/adapters/navigations/ScreenStack').default;
 
@@ -222,7 +212,6 @@ describe('ScreenStack logic', () => {
     fireEvent.press(getByRole('button'));
 
     await waitFor(() => {
-      // Check that signUp was NOT called due to missing email
       expect(supabase.auth.signUp).not.toHaveBeenCalled();
     });
   });
@@ -231,7 +220,6 @@ describe('ScreenStack logic', () => {
     const supabase = require('../../../src/lib/supabase').supabase;
     supabase.auth.signInWithPassword.mockClear();
 
-    // Activate test case scenario
     mockTriggerInvalidLogin = true;
 
     const {
@@ -253,7 +241,6 @@ describe('ScreenStack logic', () => {
       });
     });
 
-    // Reset after test
     mockTriggerInvalidLogin = false;
   });
 });

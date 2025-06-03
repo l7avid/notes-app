@@ -1,7 +1,6 @@
-import {fetchProfileById} from '../../src/lib/fetchProfileById'; // adjust path if needed
+import {fetchProfileById} from '../../src/lib/fetchProfileById';
 import {supabase} from '../../src/lib/supabase';
 
-// Mock supabase methods
 jest.mock('../../src/lib/supabase', () => ({
   supabase: {
     from: jest.fn(),

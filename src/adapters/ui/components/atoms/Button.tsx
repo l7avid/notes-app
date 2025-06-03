@@ -37,13 +37,13 @@ export default function Button({
 
   const combinedStyle = [
     styles.btnStyle,
-    disabled && styles.btnDisabled, // 👈 Apply disabled style conditionally
+    disabled && styles.btnDisabled,
     btnStyle,
   ];
 
   const combinedTextStyle = [
     styles.bntTextStyle,
-    disabled && styles.textDisabled, // 👈 Optional: style text too
+    disabled && styles.textDisabled,
     textStyle,
   ];
 
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     height: moderateScale(44),
   },
   btnDisabled: {
-    backgroundColor: '#cccccc', // 👈 Gray or a lighter tone
+    backgroundColor: '#cccccc',
   },
   bntTextStyle: {
     fontSize: textScale(14),
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
     lineHeight: textScale(14),
   },
   textDisabled: {
-    color: '#666666', // 👈 Dim text when disabled
+    color: '#666666',
   },
 });

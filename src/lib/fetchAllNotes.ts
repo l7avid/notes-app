@@ -13,7 +13,7 @@ export const fetchUserNotes = async (userId: string) => {
   }
   return data.map(note => ({
     ...note,
-    shared_by_username: note.profiles?.username || 'Guest', // ✅ Add username dynamically
+    shared_by_username: note.profiles?.username || 'Guest',
   }));
 };
 
